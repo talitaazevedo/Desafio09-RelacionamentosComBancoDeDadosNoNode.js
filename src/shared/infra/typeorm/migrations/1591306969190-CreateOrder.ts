@@ -20,6 +20,7 @@ export default class CreateOrder1591306969190 implements MigrationInterface {
           {
             name: 'order_products',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'created_at',
@@ -34,7 +35,7 @@ export default class CreateOrder1591306969190 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: 'FKCustomer',
+            name: 'customer_fk',
             referencedTableName: 'customers',
             referencedColumnNames: ['id'],
             columnNames: ['customer'],

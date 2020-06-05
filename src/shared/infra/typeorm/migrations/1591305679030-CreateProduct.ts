@@ -20,6 +20,8 @@ export default class CreateProduct1591305679030 implements MigrationInterface {
           {
             name: 'price',
             type: 'decimal',
+            precision: 10,
+            scale: 2,
           },
           {
             name: 'quantity',
@@ -28,6 +30,7 @@ export default class CreateProduct1591305679030 implements MigrationInterface {
           {
             name: 'order_products',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'created_at',
@@ -41,16 +44,6 @@ export default class CreateProduct1591305679030 implements MigrationInterface {
             default: 'now()',
           },
         ],
-        // foreignKeys: [
-        //   {
-        //     name: 'FKProductOrderProducts',
-        //     referencedTableName: 'orders_products',
-        //     referencedColumnNames: ['product'],
-        //     columnNames: ['order_products'],
-        //     onDelete: 'CASCADE',
-        //     onUpdate: 'CASCADE',
-        //   },
-        // ],
       }),
     );
   }
