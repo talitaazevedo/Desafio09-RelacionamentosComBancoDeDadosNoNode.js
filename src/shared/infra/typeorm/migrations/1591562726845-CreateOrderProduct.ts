@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateProduct1591305679030 implements MigrationInterface {
+export default class CreateOrderProduct1591562726845
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'products',
+        name: 'orders_products',
         columns: [
           {
             name: 'id',
@@ -14,12 +15,16 @@ export default class CreateProduct1591305679030 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'name',
-            type: 'varchar',
+            name: 'product_id',
+            type: 'uuid',
+          },
+          {
+            name: 'order_id',
+            type: 'uuid',
           },
           {
             name: 'price',
-            type: 'decimal',
+            type: 'numeric',
             precision: 10,
             scale: 2,
           },
@@ -28,14 +33,8 @@ export default class CreateProduct1591305679030 implements MigrationInterface {
             type: 'integer',
           },
           {
-            name: 'order_products',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
             name: 'created_at',
             type: 'timestamp',
-
             default: 'now()',
           },
           {
@@ -44,11 +43,29 @@ export default class CreateProduct1591305679030 implements MigrationInterface {
             default: 'now()',
           },
         ],
+        foreignKeys: [
+          {
+            name: 'orders_products_orders_fk',
+            columnNames: ['order_id'],
+            referencedTableName: 'orders',
+            referencedColumnNames: ['id'],
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
+          },
+          {
+            name: 'orders_products_products_fk',
+            columnNames: ['product_id'],
+            referencedTableName: 'products',
+            referencedColumnNames: ['id'],
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
+          },
+        ],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('products');
+    await queryRunner.dropTable('orders_products');
   }
 }
