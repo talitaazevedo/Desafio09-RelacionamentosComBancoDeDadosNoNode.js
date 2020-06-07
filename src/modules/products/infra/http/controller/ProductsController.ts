@@ -18,7 +18,7 @@ export default class ProductsController {
 
       return response.json(product);
     } catch (err) {
-      return response.json({ error: err.message });
+      return response.status(400).json({ error: err.message });
     }
   }
 }
