@@ -38,12 +38,15 @@ class CreateProductService {
     const productsID = products.map(product => {
       return { id: product.id };
     });
+    console.log('chegou no map', productsID);
 
     // Find all ID products into repository
 
     const productsSelectted = await this.productsRepository.findAllById(
       productsID,
     );
+    console.log('chegou na seleção', productsSelectted);
+
     if (productsSelectted.length !== products.length) {
       throw new AppError('Product is missing');
     }
