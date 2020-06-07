@@ -4,7 +4,6 @@ import IProductsRepository from '@modules/products/repositories/IProductsReposit
 import ICreateProductDTO from '@modules/products/dtos/ICreateProductDTO';
 import IUpdateProductsQuantityDTO from '@modules/products/dtos/IUpdateProductsQuantityDTO';
 import Product from '../entities/Product';
-import ProductsController from '../../http/controller/ProductsController';
 
 interface IFindProducts {
   id: string;
@@ -41,18 +40,31 @@ class ProductsRepository implements IProductsRepository {
   }
 
   public async findAllById(products: IFindProducts[]): Promise<Product[]> {
-    const product = await this.ormRepository.find({
-      where: {
-        order_products: products,
-      },
+    // const productsList = await this.ormRepository.findByIds(products);
+    // const producstsID = products.map(product => product.id);
+    const productsList = await this.ormRepository.find({
+      id: In(products),
     });
-    return product;
+    return productsList;
   }
 
   public async updateQuantity(
     products: IUpdateProductsQuantityDTO[],
   ): Promise<Product[]> {
-    // TODO
+    const productsItems = await this.findAllById(products);
+    const productsUpdatted = productsItems.map(product => {
+      const productsFound = products.find(p => p.id === product.id);
+      // IF Not found products
+      if (!productsFound) {
+        return product;
+      }
+      const productToUpdate = product;
+
+      productToUpdate.quantity -= productsFound.quantity;
+      return productToUpdate;
+    });
+    await this.ormRepository.save(productsUpdatted);
+    return productsUpdatted;
   }
 }
 

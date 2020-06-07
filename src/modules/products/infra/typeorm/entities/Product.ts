@@ -17,7 +17,7 @@ class Product {
   @Column()
   name: string;
 
-  @Column({ type: 'decimal', precision: 5, scale: 2 })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
   @Column()
@@ -26,6 +26,7 @@ class Product {
   // Revisar
   @OneToMany(() => OrdersProducts, orderProducts => orderProducts.product, {
     cascade: true,
+    eager: true,
   })
   order_products: OrdersProducts[];
 
